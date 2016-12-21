@@ -114,4 +114,18 @@ exports.deleteUser = function (userId, callback) {
             callback(null);
         }
     });
-}
+};
+
+exports.getAccountByEmail = function (email, callback) {
+    models.User.find({
+        where: {
+            email: email
+        }
+    }).then(function (user) {
+        if (user) {
+            callback(user);
+        } else {
+            callback(null);
+        }
+    });
+};
