@@ -1,5 +1,7 @@
 var AM = require('../modules/account-manager');
 var DM = require('../modules/data-manager');
+var path = require('path'),
+    fs = require('fs');
 
 module.exports = function (app) {
 
@@ -35,6 +37,30 @@ module.exports = function (app) {
             });
         }
     });
+
+    var multer = require('multer');
+    var upload = multer({dest: '../images/'});
+
+    // File input field name is simply 'file'
+    app.post('/upload', upload.single('file'), function (req, res) {
+        var file = __dirname + '/images/' + req.file.filename;
+        fs.rename(req.file.path, file, function (err) {
+            if (err) {
+                console.log(err);
+                res.send(500);
+            } else {
+                res.json({
+                    message: 'File uploaded successfully',
+                    filename: req.file.filename
+                });
+            }
+        });
+    });
+
+    app.get('/image.png', function (req, res) {
+        res.sendfile(path.resolve('./uploads/image.png'));
+    });
+
 
     app.post('/', function (req, res) {
         AM.manualLogin(req.body['user'], req.body['pass'], function (err, user) {

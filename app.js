@@ -8,6 +8,7 @@ var session = require('express-session');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var hbs = require('express-handlebars');
+var multer = require('multer');
 
 var app = express();
 
@@ -17,7 +18,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -93,5 +93,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
+
+//app.use(multer({ dest: '/tmp/'}));
 
 module.exports = app;

@@ -82,9 +82,19 @@
 
                 <div class="mdl-card__actions mdl-card--border ">
 
+                    <form method="post" enctype="multipart/form-data" action="/upload">
+                        <input type="file" name="file">
+                        <input type="submit" value="Submit">
+                    </form>
+
                     <button id="edit-btn" class="right mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                         <!--onclick='enableEdit({{id}})'-->
                         <i class="material-icons">edit</i>
+                    </button>
+
+                    <button id="upload-btn"
+                            class="right mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+                        <i class="material-icons">file_upload</i>
                     </button>
 
                 </div>

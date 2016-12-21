@@ -6,7 +6,8 @@ $(document).ready(function () {
     var editDialog = document.querySelector('dialog.edit-profile-dialog');
 
     var logoutBtn = document.querySelector('#logout-btn');
-    var fab = document.querySelector('#edit-btn');
+    var editBtn = document.querySelector('#edit-btn');
+    var uploadBtn = document.querySelector('#upload-btn');
 
     if (!logoutDialog.showModal) {
         dialogPolyfill.registerDialog(logoutDialog);
@@ -17,9 +18,13 @@ $(document).ready(function () {
     logoutBtn.addEventListener('click', function () {
         logoutDialog.showModal();
     });
-    fab.addEventListener('click', function () {
+    editBtn.addEventListener('click', function () {
         editDialog.showModal();
     });
+    uploadBtn.addEventListener('click', function () {
+
+    });
+
     logoutDialog.querySelector('.close').addEventListener('click', function () {
         logoutDialog.close();
     });
