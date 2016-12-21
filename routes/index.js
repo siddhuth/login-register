@@ -64,6 +64,28 @@ module.exports = function (app) {
 
     });
 
+    /**
+     * update the user's profile route
+     * */
+    app.put('/profile', isLoggedIn, function (req, res) {
+        var user = req.session.user;
+        var newData = {
+            id: user.id,
+            first: req.body['first'],
+            last: req.body['last'],
+            email: req.body['email'],
+            phone: req.body['phone']
+        };
+
+        AM.updateAccount(newData, function (err, user) {
+            if (user) {
+                res.status(200).send(user);
+            } else {
+                res.status(400).send(null);
+            }
+        });
+    });
+
     app.post('/logout', function (req, res) {
         console.log('DEBUG: user logged out');
         res.clearCookie('username');

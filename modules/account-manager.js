@@ -61,3 +61,43 @@ exports.addNewAccount = function (newData, callback) {
         }
     });
 };
+
+
+exports.updateAccount = function (newData, callback) {
+    models.User.find({
+        where: {
+            id: newData.id
+        }
+    }).then(function (user) {
+        user.first = newData.first;
+        user.last = newData.last;
+        user.phone = newData.phone;
+
+        if (user.email != newData.email) {
+            models.User.find({where: {email: newData.email}}).then(function (userWithEmail) {
+                if (userWithEmail) {
+                    //there's already a user with that email... send an error
+                } else {
+                    //there isn't a user with that email, update the email
+                    user.email = newData.email;
+                    user.save().then(function (updatedUser) {
+                        if (updatedUser) {
+                            callback(null, updatedUser)
+                        } else {
+                            callback('error-updating-user', null);
+                        }
+                    });
+                }
+            });
+        } else {
+            user.save().then(function (updatedUser) {
+                if (updatedUser) {
+                    callback(null, updatedUser)
+                } else {
+                    callback('error-updating-user', null);
+                }
+            });
+        }
+
+    });
+};

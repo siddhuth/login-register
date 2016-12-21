@@ -1,31 +1,3 @@
-var enableEdit = function (itemId) {
-    var pc = new ProfileController();
-
-    //var dialog = document.querySelector('dialog.edit-profile-dialog');
-    var dialog = document.getElementById('profile-edit-id');
-
-    var fab = document.querySelector('#fab-add');
-
-    if (!dialog.showModal) {
-        dialogPolyfill.registerDialog(dialog);
-    }
-
-    dialog.querySelector('.close').addEventListener('click', function () {
-        dialog.close();
-        itemId = null;
-
-    });
-    //must match the button (querySelector)
-    dialog.querySelector('.edit').addEventListener('click', function () {
-        //console.log("delete");
-        pc.editProfileInfo(itemId);
-        dialog.close();
-        itemId = null;
-    });
-    dialog.showModal();
-};
-
-
 $(document).ready(function () {
 
     var pc = new ProfileController();

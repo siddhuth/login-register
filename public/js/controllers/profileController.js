@@ -69,9 +69,6 @@ function ProfileController() {
                 success: function (data) {
                     that.showToast('Successfully updated the profile');
 
-                    //remove the
-                    var emptyText = $('#empty-text');
-                    if (emptyText) emptyText.remove();
 
                     $('#user-profile-firstlast').val(data.first + data.last);
                     $('#user-profile-email').val(data.email);
