@@ -101,3 +101,17 @@ exports.updateAccount = function (newData, callback) {
 
     });
 };
+
+exports.deleteUser = function (userId, callback) {
+    models.User.find({
+        where: {
+            id: userId
+        }
+    }).then(function (user) {
+        if (user) {
+            user.destroy().then(callback);
+        } else {
+            callback(null);
+        }
+    });
+}

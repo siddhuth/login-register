@@ -36,7 +36,7 @@
     </header>
 
     <div class="main-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-        <header class="main-drawer-header"><img src="images/user.jpg" class="user-avatar">
+        <header class="main-drawer-header"><img src="/profileImage" class="user-avatar">
             <div class="user-avatar-dropdown"><span>{{user.first}} {{user.last}}
                 <br>{{user.email}}</span>
                 <div class="mdl-layout-spacer"></div>
@@ -78,24 +78,28 @@
                             <td>Phone:</td>
                             <td id="user-profile-phone">{{{user.phone}}}</td>
                     </table>
-                </div>
 
-                <div class="mdl-card__actions mdl-card--border ">
+                    <br>
 
-                    <form method="post" enctype="multipart/form-data" action="/upload">
+                    <form id="upload-image-form" method="post" enctype="multipart/form-data"
+                          action="/upload/{{user.username}}">
                         <input type="file" name="file">
                         <input type="submit" value="Submit">
                     </form>
+                </div>
+
+                <div class="mdl-card__actions mdl-card--border ">
 
                     <button id="edit-btn" class="right mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
                         <!--onclick='enableEdit({{id}})'-->
                         <i class="material-icons">edit</i>
                     </button>
 
-                    <button id="upload-btn"
+                    <button id="delete-btn"
                             class="right mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                        <i class="material-icons">file_upload</i>
+                        <i class="material-icons">delete</i>
                     </button>
+
 
                 </div>
             </div>
@@ -106,7 +110,7 @@
                     <div class="mdl-card__title mdl-card--expand">
                         <h4>
                             {{this.first}} {{this.last}}<br>
-                            {{this.role}}
+                            Username: {{this.username}}
                         </h4>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
@@ -134,8 +138,22 @@
     </div>
 </dialog>
 
+<!-- delete dialog -->
+<dialog class="delete-profile-dialog mdl-dialog">
+    <h4 class="mdl-dialog__title">Delete Account?</h4>
+    <div class="mdl-dialog__content">
+        <p>
+            Are you sure you want to delete your account? You can't undo this.
+        </p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button accept">Accept</button>
+        <button type="button" class="mdl-button close">Cancel</button>
+    </div>
+</dialog>
+
 <!-- Edit information dialog -->
-<dialog class="edit-profile-dialog mdl-dialog" id="profile-edit-id">
+<dialog class="edit-profile-dialog mdl-dialog" id="profile-edit-dialog">
     <h4 class="mdl-dialog__title">Edit Info</h4>
     <div class="mdl-dialog__content">
         <p>
@@ -173,7 +191,7 @@
     </div>
     <div class="mdl-dialog__actions">
         <button type="button" class="mdl-button edit">Update</button>
-        <button type="button" class="mdl-button closeEdit">Cancel</button>
+        <button type="button" class="mdl-button close">Cancel</button>
     </div>
 </dialog>
 

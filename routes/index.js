@@ -42,25 +42,65 @@ module.exports = function (app) {
     var upload = multer({dest: '../images/'});
 
     // File input field name is simply 'file'
-    app.post('/upload', upload.single('file'), function (req, res) {
-        var file = __dirname + '/images/' + req.file.filename;
-        fs.rename(req.file.path, file, function (err) {
+    app.post('/upload/:username', upload.single('file'), function (req, res) {
+        //gets and saves the user's username as the file name
+        var username = req.params.username;
+        var uploadedFile = req.file;
+
+        if (!uploadedFile) {
+            res.status(400).send('Please select a file');
+            return;
+        }
+
+        if (!username) {
+            res.status(400).send('internal error');
+            return;
+        }
+
+        var extension = uploadedFile.mimetype;
+        console.log(extension);
+
+        if (!extension) {
+            res.status(400).send('invalid image type');
+            console.log('not a png');
+            return;
+        }
+        uploadedFile.filename = username + '.png';
+
+        var file = __dirname + '/../images/' + uploadedFile.filename;
+        fs.rename(uploadedFile.path, file, function (err) {
             if (err) {
                 console.log(err);
-                res.send(500);
+                res.status(400).send(err);
             } else {
-                res.json({
-                    message: 'File uploaded successfully',
-                    filename: req.file.filename
-                });
+                res.redirect('/home');
             }
         });
     });
 
-    app.get('/image.png', function (req, res) {
-        res.sendfile(path.resolve('./uploads/image.png'));
+    app.get('/profileImage', function (req, res) {
+        var imageName = req.session.user.username + '.png';
+        var filepath = __dirname + '/../images/' + imageName;
+        console.log(filepath);
+        res.sendfile(path.resolve(filepath));
     });
 
+    app.delete('/user', function (req, res) {
+        var user = req.session.user;
+        AM.deleteUser(user.id, function (user) {
+            if (user) {
+                res.clearCookie('username');
+                res.clearCookie('password');
+                req.session.destroy(function (err) {
+                    res.status(200).send('ok');
+                });
+                //res.status(200).send();
+            } else {
+                res.status(400).send('Error deleting user');
+            }
+        })
+
+    });
 
     app.post('/', function (req, res) {
         AM.manualLogin(req.body['user'], req.body['pass'], function (err, user) {

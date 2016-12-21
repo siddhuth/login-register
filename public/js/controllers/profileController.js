@@ -92,4 +92,21 @@ function ProfileController() {
         }
     };
 
+    this.attemptDelete = function () {
+        $.ajax({
+            url: "/user",
+            type: "DELETE",
+            contentType: "application/x-www-form-urlencoded",
+            data: {},
+            success: function (data) {
+                that.showToast('deleted account');
+                window.location.href = '/';
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR.responseText + ' :: ' + jqXHR.statusText);
+                that.showToast('Error deleting account info');
+            }
+        });
+    };
+
 }

@@ -4,10 +4,11 @@ $(document).ready(function () {
 
     var logoutDialog = document.querySelector('dialog.logout-dialog');
     var editDialog = document.querySelector('dialog.edit-profile-dialog');
+    var deleteDialog = document.querySelector('dialog.delete-profile-dialog');
 
     var logoutBtn = document.querySelector('#logout-btn');
     var editBtn = document.querySelector('#edit-btn');
-    var uploadBtn = document.querySelector('#upload-btn');
+    var deleteBtn = document.querySelector('#delete-btn');
 
     if (!logoutDialog.showModal) {
         dialogPolyfill.registerDialog(logoutDialog);
@@ -15,14 +16,18 @@ $(document).ready(function () {
     if (!editDialog.showModal) {
         dialogPolyfill.registerDialog(editDialog);
     }
+    if (!deleteDialog.showModal) {
+        dialogPolyfill.registerDialog(deleteDialog);
+    }
+
     logoutBtn.addEventListener('click', function () {
         logoutDialog.showModal();
     });
     editBtn.addEventListener('click', function () {
         editDialog.showModal();
     });
-    uploadBtn.addEventListener('click', function () {
-
+    deleteBtn.addEventListener('click', function () {
+        deleteDialog.showModal();
     });
 
     logoutDialog.querySelector('.close').addEventListener('click', function () {
@@ -30,15 +35,37 @@ $(document).ready(function () {
     });
     logoutDialog.querySelector('.accept').addEventListener('click', function () {
         pc.attemptLogout();
+        logoutDialog.close();
     });
-    editDialog.querySelector('.closeEdit').addEventListener('click', function () {
-        document.getElementById('profile-edit-id').close();
+
+    deleteDialog.querySelector('.close').addEventListener('click', function () {
+        deleteDialog.close();
+    });
+    deleteDialog.querySelector('.accept').addEventListener('click', function () {
+        pc.attemptDelete();
+        deleteDialog.close();
+    });
+
+    editDialog.querySelector('.close').addEventListener('click', function () {
+        document.getElementById('profile-edit-dialog').close();
         //dialog.close();
     });
     editDialog.querySelector('.edit').addEventListener('click', function () {
         pc.editProfileInfo();
-        document.getElementById('profile-edit-id').close();
+        document.getElementById('profile-edit-dialog').close();
         //dialog.closeEdit();
-    })
+    });
 
+    $('#upload-image-form').ajaxForm({
+        success: function (responseText, status, xhr, $form) {
+            //pc.showToast(responseText);
+            //if (status == 'success')
+            window.location.href = '/home';
+        },
+        error: function (e) {
+            if (e) {
+                pc.showToast('Error: ' + e.responseText);
+            }
+        }
+    });
 });
